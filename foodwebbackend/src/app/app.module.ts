@@ -5,10 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedAngularMaterialModule } from './share/shared-angular-material/shared-angular-material.module';
+import { LoginComponent } from './login/login.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

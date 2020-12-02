@@ -9,8 +9,8 @@ import { UserService } from './_service/user.service';
 export class AppComponent {
   title = 'foodwebbackend';
   constructor(private userService: UserService) {
-    this.userService.Gets().subscribe(res => {
-      console.log(res);
-    });
+    // this.userService.Gets().subscribe(res => {
+    //   console.log(res);
+    // });
   }
 }

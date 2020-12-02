@@ -3,3 +3,13 @@
 //@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
 //@import "~@angular/material/prebuilt-themes/purple-green.css";
 @import "~@fortawesome/fontawesome-free/css/all.css";
+
+//使mat-car有作用
+mat-card {
+  margin: 1rem;
+}
+
+//寬度為填滿
+.full-width {
+  width: 100%;
+}

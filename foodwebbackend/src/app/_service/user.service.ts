@@ -12,4 +12,7 @@ export class UserService {
   Gets() {
     return this.http.get<any>(this.api);
   }
+  Post(data) {
+    return this.http.post<any>(this.api, data);
+  }
 }
