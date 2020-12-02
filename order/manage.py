@@ -9,7 +9,7 @@ manager.add_command("runserver",Server(host='127.0.0.1',port=app.config['SERVER_
 def main():
     #app.run(host='0.0.0.0',debug='True')
     #app.run(debug='True')
-    manager.run();
+    manager.run()
 
 if __name__ == '__main__':
     try:
