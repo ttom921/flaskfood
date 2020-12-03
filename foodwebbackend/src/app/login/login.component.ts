@@ -14,18 +14,18 @@ export class LoginComponent implements OnInit {
   hide = true;
   userInfo: any = {};
   formErrors = {
-    "email": "",
-    "password": "",
+    "login_name": "",
+    "login_pwd": "",
     "formError": ""
   };
   vaildationMessages = {
-    "email": {
+    "login_name": {
       "required": "郵箱必須輸入",
-      "email": "請輸入正確的郵箱地址"
+      "minlength": "請輸入至少要4位"
     },
-    "password": {
+    "login_pwd": {
       "required": "密碼必須輸入",
-      "minlength": "密碼至少要5位"
+      "minlength": "密碼至少要4位"
     }
   };
   //#endregion form 相關
@@ -40,15 +40,15 @@ export class LoginComponent implements OnInit {
   }
   buildForm() {
     this.formModel = this.fb.group({
-      "email": [
-        this.userInfo.email,
+      "login_name": [
+        this.userInfo.login_name,
         [
           Validators.required,
-          Validators.email,
+          Validators.minLength(4),
         ]
       ],
-      "password": [
-        this.userInfo.password,
+      "login_pwd": [
+        this.userInfo.login_pwd,
         [
           Validators.required,
           Validators.minLength(4),
