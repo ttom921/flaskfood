@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   };
   vaildationMessages = {
     "login_name": {
-      "required": "郵箱必須輸入",
+      "required": "必須輸入",
       "minlength": "請輸入至少要4位"
     },
     "login_pwd": {
@@ -43,15 +43,15 @@ export class LoginComponent implements OnInit {
       "login_name": [
         this.userInfo.login_name,
         [
-          Validators.required,
-          Validators.minLength(4),
+          // Validators.required,
+          // Validators.minLength(4),
         ]
       ],
       "login_pwd": [
         this.userInfo.login_pwd,
         [
-          Validators.required,
-          Validators.minLength(4),
+          // Validators.required,
+          // Validators.minLength(4),
         ]
       ]
     });
