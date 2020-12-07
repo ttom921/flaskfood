@@ -50,7 +50,7 @@ def login():
         # 檢查密碼
         if user_info.login_pwd != UserService.genePwd(login_pwd,user_info.login_salt):
            resp['code']=-1
-           resp['msg']="請輸入正確的用戶名和密碼-2~~"
+           resp['msg'] ="請輸入正確的用戶名和密碼-2~~"
            return make_response(jsonify(resp),200) 
 
         return make_response(jsonify(resp),200)  
