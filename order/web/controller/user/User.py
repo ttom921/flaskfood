@@ -52,5 +52,10 @@ def login():
            resp['code']=-1
            resp['msg'] ="請輸入正確的用戶名和密碼-2~~"
            return make_response(jsonify(resp),200) 
-
+        # 登入成功 時，返回 auth code 
+        tokenData=dict()
+        #tokenData["mooc_foo"]="%s#%s"%("aaaaa",user_info.uid)
+        tokenData[app.config["AUTH_TOKEN_NAME"]]="%s#%s"%(UserService.geneAuthCode(user_info),user_info.uid)
+        
+        resp['data']=tokenData
         return make_response(jsonify(resp),200)  

@@ -4,4 +4,4 @@ DEBUG = False
 SQLALCHEMY_ECHO = False
 API_VERSION = 'v0.0'
 
-
+AUTH_TOKEN_NAME="authtoken"
