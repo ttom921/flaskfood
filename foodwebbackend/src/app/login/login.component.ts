@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../_service/auth/authentication.service';
 import { UserService } from '../_service/user.service';
 
 @Component({
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -78,10 +80,22 @@ export class LoginComponent implements OnInit {
   }
   onSubmit(e) {
     if (this.formModel.valid) {
-      console.log(this.formModel.value);
-      this.userService.Post(this.formModel.value).subscribe(res => {
-        console.log(res);
-      });
+      //console.log(this.formModel.value);
+      this.userInfo = this.formModel.value;
+      this.userService.Post(this.formModel.value).subscribe(
+        res => {
+          this.authenticationService.loginSuccess(this.userInfo.login_name, this.userInfo.login_pwd, res);
+          //console.log(res);
+          let url = '/dashboard';
+          this.router.navigate([`${url}`]);
+          //this.router.navigate(['']);
+          //this.router.navigate(['/dashboard']);
+        },
+        error => {
+          console.log(error);
+        }
+
+      );
     }
   }
 }
