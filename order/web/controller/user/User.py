@@ -1,9 +1,11 @@
 
 from flask import Blueprint,request,make_response,jsonify
+import json
 from common.models.User import User
 from common.libs.user.UserService import UserService
+from common.libs.response.RespCode import RespCode
 from application import app
-import json
+
 router_user = Blueprint('user_page',__name__)
 
 @router_user.route("/login",methods=["GET","POST"])
@@ -30,32 +32,33 @@ def login():
         # return make_response(jsonify(resmsg),200)  
         # 檢查參數值
         if login_name is None or len(login_name) < 1 :
-            resp['code']=-1
+            resp['code']=RespCode.UNDEFINERROR
             resp['msg']="請輸入正確的登錄用戶名~~"
             app.logger.debug(resp)
-            return make_response(jsonify(resp))
+            return resp['msg'],resp['code']
             
         if login_pwd is None or len(login_pwd) <1:
-            resp['code']=-1
+            resp['code']=RespCode.UNDEFINERROR
             resp['msg']="請輸入正確的登錄密碼~~"
-            return make_response(jsonify(resp),200)
+            return resp['msg'],resp['code']
 
         # 資料庫相關
         user_info = User.query.filter_by( login_name= login_name).first()
         if not user_info:
-            resp['code']=-1
+            resp['code']=RespCode.UNDEFINERROR
             resp['msg']="請輸入正確的用戶名和密碼-1~~"
-            return make_response(jsonify(resp),200)
+            return resp['msg'],resp['code']
 
         # 檢查密碼
         if user_info.login_pwd != UserService.genePwd(login_pwd,user_info.login_salt):
-           resp['code']=-1
+           resp['code']=RespCode.UNDEFINERROR
            resp['msg'] ="請輸入正確的用戶名和密碼-2~~"
-           return make_response(jsonify(resp),200) 
+           return resp['msg'],resp['code']
         # 登入成功 時，返回 auth code 
         tokenData=dict()
         #tokenData["mooc_foo"]="%s#%s"%("aaaaa",user_info.uid)
         tokenData[app.config["AUTH_TOKEN_NAME"]]="%s#%s"%(UserService.geneAuthCode(user_info),user_info.uid)
         
         resp['data']=tokenData
-        return make_response(jsonify(resp),200)  
+        #return make_response(jsonify(resp),200)  
+        return jsonify(resp)  

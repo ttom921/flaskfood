@@ -1,0 +1,46 @@
+<div mat-dialog-container>
+  <!-- <mat-toolbar style="height: 5vh;" *ngIf="style==1" color="primary" class="mat-elevation-z1">
+      <h3 mat-dialog-title>{{title}}</h3>
+    </mat-toolbar> -->
+  <h3 mat-dialog-title *ngIf="style==1" color="primary" class="mat-elevation-z1">{{title}}</h3>
+  <!--loading-->
+  <div *ngIf="style==2">
+    <mat-progress-spinner mode="indeterminate" [strokeWidth]="4" [diameter]="44" style="margin:0 auto;">
+    </mat-progress-spinner>
+  </div>
+  <mat-dialog-content>
+    <div class="message" *ngIf="message!==''">
+      <p>
+        <br>
+        {{message}}
+      </p>
+    </div>
+    <div class="info" *ngIf="information!==''">
+      <p>
+        &nbsp;
+        {{information}}
+        &nbsp;
+      </p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <div [hidden]="style==2">
+      <div *ngIf="button==0">
+        <button mat-raised-button color="accent" (click)="onOk()" tabindex="-1">Ok</button>
+      </div>
+      <div *ngIf="button==1">
+        <button mat-raised-button color="accent" (click)="onOk()" tabindex="-1">Ok</button>
+        <button mat-raised-button color="accent" (click)="onCancel()" tabindex="-1">Cancel</button>
+      </div>
+      <div *ngIf="button==2">
+        <button mat-raised-button color="accent" (click)="onYes()" tabindex="-1">Yes</button>
+        <button mat-raised-button color="accent" (click)="onNo()" tabindex="-1">No</button>
+      </div>
+      <div *ngIf="button==3">
+        <button mat-raised-button color="accent" (click)="onAccept()" tabindex="-1">Accept</button>
+        <button mat-raised-button color="accent" (click)="onReject()" tabindex="-1">Reject</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,30 @@
+div.message {
+  font-weight: bold;
+  font-size: 24pt;
+  // padding-left: 25px;
+  // padding-right: 25px;
+  // padding-bottom: 0px;
+}
+
+// div.info {
+//   padding-left: 25px;
+//   padding-right: 25px;
+//   padding-top: 0px;
+//   padding-bottom: 0px;
+//   font-size: 12pt;
+// }
+
+.mat-dialog-container {
+  overflow-y: hidden;
+
+}
+
+.mat-dialog-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-dialog-actions {
+  justify-content: flex-end;
+}

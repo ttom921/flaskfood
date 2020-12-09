@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../_service/auth/authentication.service';
 import { UserService } from '../_service/user.service';
+import { MessageboxService } from '../_services/messagebox/messagebox.service';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
+    private messageboxService: MessageboxService,
     private authenticationService: AuthenticationService
   ) { }
 
@@ -92,7 +94,12 @@ export class LoginComponent implements OnInit {
           //this.router.navigate(['/dashboard']);
         },
         error => {
-          console.log(error);
+          // console.log("----------------------");
+          // console.log(error);
+          // console.log("----------------------");
+          //this.authenticationService.loginFail(error);
+          this.messageboxService.ResponseErrorMsg(error);
+          this.router.navigate(['/login']);
         }
 
       );
