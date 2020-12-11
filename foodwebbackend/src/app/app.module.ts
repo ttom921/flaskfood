@@ -8,6 +8,8 @@ import { SharedAngularMaterialModule } from './share/shared-angular-material/sha
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SimpleDialogComponent } from './_dialog/simple-dialog/simple-dialog.component';
+import { HttpConfigInterceptor } from './_helpers/http-config.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,13 @@ import { SimpleDialogComponent } from './_dialog/simple-dialog/simple-dialog.com
     BrowserAnimationsModule,
     SharedAngularMaterialModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
   entryComponents: [SimpleDialogComponent],
 })

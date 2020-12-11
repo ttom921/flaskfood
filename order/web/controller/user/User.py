@@ -62,3 +62,9 @@ def login():
         resp['data']=tokenData
         #return make_response(jsonify(resp),200)  
         return jsonify(resp)  
+
+@router_user.route("/example",methods=["GET"])
+def userexample():
+    # 返回值
+    resp ={'code':200,'msg':'測試成功','data':{}}
+    return jsonify(resp)  

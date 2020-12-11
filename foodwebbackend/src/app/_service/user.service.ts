@@ -15,4 +15,8 @@ export class UserService {
   Post(data) {
     return this.http.post<any>(this.api, data);
   }
+  example() {
+    let url = `${environment.apiUrl}/user/example`;
+    return this.http.get<any>(url);
+  }
 }
