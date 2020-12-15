@@ -22,13 +22,13 @@ def login():
         #app.logger.debug("POST")
         #取得JSON的值因為angular是傳json值的
         data = json.loads(request.data)
-        app.logger.debug(data)
+        #app.logger.debug(data)
         # 返回值
         resp ={'code':200,'msg':'登錄成功','data':{}}
         login_name = data['login_name'] if 'login_name' in data else ''  
         login_pwd = data['login_pwd'] if 'login_pwd' in data else ''
-        resmsg="%s-%s" % (login_name,login_pwd)
-        app.logger.debug(resmsg)
+        #resmsg="%s-%s" % (login_name,login_pwd)
+        #app.logger.debug(resmsg)
         # return make_response(jsonify(resmsg),200)  
         # 檢查參數值
         if login_name is None or len(login_name) < 1 :

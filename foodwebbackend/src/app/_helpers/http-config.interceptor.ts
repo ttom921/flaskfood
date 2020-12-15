@@ -19,12 +19,14 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     private authenticationService: AuthenticationService
   ) { }
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     //有token
     // add authorization header with basic auth credentials if available
     const currentUser = this.authenticationService.currentUserValue;
+    //console.log(`HttpConfigInterceptor currentUser=`, currentUser);
     if (currentUser) {
       const token: string = currentUser.user_token;
+      //console.log(`HttpConfigInterceptor token=`, token);
       if (token) {
         request = request.clone({ headers: request.headers.set('Authorization', token) });
       }

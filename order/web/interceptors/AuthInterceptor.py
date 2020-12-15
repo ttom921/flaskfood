@@ -17,6 +17,7 @@ def before_request():
     
     pattern=re.compile('%s' % "|".join(ignore_check_login_urls))
     if pattern.match(path):
+       app.logger.info("match={}".format(ignore_check_login_urls)) 
        return  
    
    
@@ -42,7 +43,7 @@ def before_request():
 def check_login():
     #app.logger.info("headers={}".format(request.headers))  
     token_info = request.headers.get('Authorization')
-    #app.logger.info("token={}".format(token)) 
+    #app.logger.info("token={}".format(token_info)) 
     if token_info is None:
         return False   
 
