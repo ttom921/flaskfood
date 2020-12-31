@@ -8,6 +8,7 @@ AUTH_TOKEN_NAME="authtoken"
 # 過濾url
 IGNORE_URLS=[
     "^/{0}/user/login".format(API_VERSION),
+    "/"
 ]
 IGNORE_CHECK_LOGIN_URLS=[
     "^/favicon.ico",
