@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 import os
+from flask_sockets import Sockets
 
 
 class Application(Flask):
@@ -18,7 +19,9 @@ class Application(Flask):
         
 db = SQLAlchemy()
 app = Application(__name__)
+
 manager = Manager(app)
+sockets = Sockets(app)
 
 
 

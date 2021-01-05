@@ -5,7 +5,7 @@ from common.libs.user.UserService import UserService
 from common.libs.response.RespCode import RespCode
 import re
 
-@app.before_request
+#@app.before_request
 def before_request():
     path= request.path
     # 返回值
