@@ -1,0 +1,14 @@
+<p>用戶聊天nickname</p>
+<div>
+  <p>請nickname：<input type="text" value="nickname1" #nickname>
+</div>
+<div id="chat_room">
+  <p>請輸入聊天內容：<input type="text" #msg>
+    <button id="send" (click)="send()">發送</button>
+  </p>
+  <div #chat_content>
+    <li *ngFor="let item of messagelist">
+      {{item.author}} ->{{item.message}}
+    </li>
+  </div>
+</div>
