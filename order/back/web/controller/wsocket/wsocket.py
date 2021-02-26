@@ -16,24 +16,27 @@ def echo_socket(socket):
     #wsock = request.environ.get('wsgi.websocket')
     #取得wsocke和socket是一樣的
     #app.logger.info('socket={0}'.format(socket))
-    #app.logger.info('wsock={0}'.format(wsock))
+    app.logger.info('socket={0}'.format(dir(socket)))
     # recdata=socket.receive()
     # msg=json.loads(recdata)
     # name=msg['author']
     # 加入列表
     client_dict[socket]=socket
 
-    if not socket:
-        abort(400, 'Expected WebSocket request.')
+    # if not socket:
+    #     abort(400, 'Expected WebSocket request.')
 
 
-    while not socket.closed:
+    while True :
+        time.sleep(1)
         try:
             recdata=socket.receive()
+            #len(recdata)
+            #app.logger.info('reclent={0}'.format(len(recdata)))
         except WebSocketError:
             break
        
-        if recdata is None:
+        if len(recdata)==0:
             continue
         print("現有連接用戶：%s" % (len(client_dict))) 
         print(f'i received:{recdata}')

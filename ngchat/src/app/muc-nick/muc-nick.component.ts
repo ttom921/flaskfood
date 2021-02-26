@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ChatService } from '../muc-nonick/_service/chat.service';
+import { ChatService } from './_service/chat.service';
 
 @Component({
   selector: 'muc-nick',
