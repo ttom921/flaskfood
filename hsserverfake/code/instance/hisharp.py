@@ -15,4 +15,6 @@ SQLALCHEMY_ENGINE_OPTIONS = {'pool_recycle': 280, 'pool_timeout': 100, 'pool_pre
 REDIS_URL = 'redis://localhost'
 LIVE_URL  = "rtmp://192.168.40.209:1935/"
 
+KFKA_URL = "192.168.40.191:9092"
+
 DB_ENGINE_ECHO = False

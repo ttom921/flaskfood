@@ -7,6 +7,7 @@ from flask_uwsgi_websocket import GeventWebSocket
 
 
 from api.example import example
+from api.kafka import kafka
 from api.wsocket import wsocket
 
 from api.app import appManager
@@ -34,6 +35,8 @@ except Exception as e:
 # 藍圖註冊
 app.register_blueprint(blueprint=example, url_prefix='/{0}/example'.format(app.config['API_VERSION']))
 
+app.register_blueprint(blueprint=kafka, url_prefix='/{0}/kafka'.format(app.config['API_VERSION']))
+
 sockets.register_blueprint(blueprint=wsocket, url_prefix='/{0}/websocket/'.format(app.config['API_VERSION']))
 #sockets.register_blueprint(wsocket.construct_blueprint(sockets), url_prefix='/{0}/websocket/'.format(app.config['API_VERSION']))
 
@@ -45,3 +48,8 @@ def _index():
 
 if __name__ == "__main__":
     app.run()
+
+"""
+查看
+http://192.168.40.191/v0.6/example/index
+"""
