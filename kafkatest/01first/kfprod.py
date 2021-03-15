@@ -4,22 +4,24 @@ import datetime
 import config
 from kafka import KafkaProducer
 
+
 def start_producer():
-    producer =KafkaProducer(
+    producer = KafkaProducer(
         bootstrap_servers=config.SERVER,
         value_serializer=lambda m: json.dumps(m).encode()
-        )
+    )
     for i in range(100):
-        data={
-            "num":i,
-            "ts":datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data = {
+            "num": i,
+            "ts": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
-        producer.send(config.TOPIC,data)
+        producer.send(config.TOPIC, data)
         print(f"send data={data}")
         time.sleep(1)
-    producer.close()    
+    producer.close()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     start_producer()
 
 # producer = KafkaProducer(bootstrap_servers=config.SERVER,
