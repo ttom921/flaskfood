@@ -16,6 +16,9 @@ from libs.utility import *
 from kafka.errors import KafkaError
 from kafka import KafkaConsumer
 
+
+from random import randint
+
 LOG_LEVEL_INFO()
 # LOG_LEVEL_DEBUG()
 # LOG_LEVEL_ERROR()
@@ -45,6 +48,7 @@ def readServerConfig():
 
 
 def main():
+    testGroupid = True
     # 檢查檔案目前檔案是否正在執行
     isRuning()
     # 讀取config檔
@@ -52,17 +56,42 @@ def main():
     logging.info(f"server_config={server_config}")
     topic = "newtopic"
     consumer = None
+    group_id = None
+    if testGroupid:
+        group_id = 'my-group'
     try:
         consumer = KafkaConsumer(topic,
+                                 group_id=group_id,
                                  bootstrap_servers=server_config["KFKA_URL"])
+        while True:
+            msg_pack = consumer.poll(timeout_ms=2, max_records=1)  # 从kafka获取消息
+            for tp, messages in msg_pack.items():
+                for msg in messages:
+                    # print(msg)
+                    print(f"topic = {msg.topic}")  # topic default is string
+                    print(f"partition = {msg.partition}")
+                    print(f"offset = {msg.offset}")
+                    print(f"value = {msg.value.decode('utf-8')}")
+                    print(f"timestamp = {msg.timestamp}")
+            # msg = consumer.poll(timeout_ms=2, max_records=1)  # 从kafka获取消息
+            # if not msg:
+            #     continue
+            # # print(msg)
+            # print(f"topic = {msg.topic}")  # topic default is string
+            # # print(f"partition = {msg.partition}")
+            # # print(f"offset = {msg.offset}")
+            # # print(f"value = {msg.value.decode('utf-8')}")
+            # # print(f"timestamp = {msg.timestamp}")
+            time.sleep(randint(1, 10))
 
-        for msg in consumer:
-            print(msg)
-            print(f"topic = {msg.topic}")  # topic default is string
-            print(f"partition = {msg.partition}")
-            print(f"offset = {msg.offset}")
-            print(f"value = {msg.value.decode('utf-8')}")
-            print(f"timestamp = {msg.timestamp}")
+        # for msg in consumer:
+        #     print(msg)
+        #     print(f"topic = {msg.topic}")  # topic default is string
+        #     print(f"partition = {msg.partition}")
+        #     print(f"offset = {msg.offset}")
+        #     print(f"value = {msg.value.decode('utf-8')}")
+        #     print(f"timestamp = {msg.timestamp}")
+        #     time.sleep(randint(5, 20))
 
     except KafkaError as ke:
         # producer.close()

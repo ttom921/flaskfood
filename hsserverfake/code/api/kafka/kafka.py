@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, jsonify
+from flask import Blueprint, request, make_response, jsonify, g, current_app
 
 from libs.response import *
 from libs.headers import *
@@ -11,18 +11,16 @@ from kafka.admin import KafkaAdminClient, NewTopic
 
 from kafka import KafkaProducer
 
+from multiprocessing import Value
 # import sys
 
-
+MsgCount = Value('i', 0)
 LOG_LEVEL_INFO()
 # LOG_LEVEL_ERROR()
 # sys.path.append("../..")
 
 # example = Blueprint('index_page',__name__)
 kafka = Blueprint(name="kafka", import_name=__name__)
-
-# 測試用
-msgcount = 0
 
 
 @kafka.route("/index", methods=["GET"], endpoint='_index')
@@ -76,7 +74,7 @@ def __createTopic(topic):
         if admin_client == None:
             return "admin_client is none", RespCode.ARGS_ERROR
         topic_list = []
-        topic_list.append(NewTopic(name=topic, num_partitions=1, replication_factor=3))
+        topic_list.append(NewTopic(name=topic, num_partitions=3, replication_factor=2))
 
         res = admin_client.create_topics(new_topics=topic_list, validate_only=False)
         # logging.info(f"NewTopic res={res}")
@@ -109,6 +107,8 @@ def __delTopic(topic):
         res = admin_client.delete_topics(topic_list)
         admin_client.close()
         # logging.info(f"NewTopic res={res}")
+        with MsgCount.get_lock():
+            MsgCount.value = 0
         return ""
     except KafkaError as ke:
         admin_client.close()
@@ -130,6 +130,7 @@ def __delTopic(topic):
 @kafka.route("/send", methods=["POST", "DELETE"], endpoint='_send')
 @flask_request_initial
 def _send(reqArgs):
+    logging.info(f"MsgCount.value ={MsgCount.value}")
     postData = json.loads(reqArgs.postData)
     logging.info(f"postData={postData}")
     if request.method == 'POST':
@@ -138,33 +139,43 @@ def _send(reqArgs):
 
 
 def __kafkaSend(postData):
+    logging.info(f"current_app.config['KFKA_URL'] ={current_app.config['KFKA_URL']}")
+    server_list = ["192.168.40.191:9092", "192.168.40.191:9093", "192.168.40.191:9094"]
+    logging.info(f"server_list ={server_list}")
+    # current_app.config["KFKA_URL"]
+    producer = KafkaProducer(
+        bootstrap_servers=current_app.config["KFKA_URL"],
+        value_serializer=lambda m: json.dumps(m).encode()
+    )
     try:
-        producer = KafkaProducer(
-            bootstrap_servers=current_app.config["KFKA_URL"],
-            value_serializer=lambda m: json.dumps(m).encode()
-        )
+
         topic = postData['topic']
         if topic == None:
             return "topic is none", RespCode.ARGS_ERROR
-        global msgcount
-        #logging.info(f"msgcount ={msgcount}")
+
+        #logging.info(f"MsgCount.value ={MsgCount.value}")
         send_data = {
-            "num": msgcount,
+            "num": MsgCount.value,
             "ts": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             "data": postData['data']
         }
+        logging.info(f"send_data ={send_data}")
         producer.send(topic, send_data)
 
-        msgcount += 1
+        with MsgCount.get_lock():
+            MsgCount.value += 1
 
-        producer.close()
+        # producer.close()
         return ""
     except KafkaError as ke:
-        producer.close()
+        # producer.close()
         return f"{ke.errno}-{ke.message}", RespCode.ARGS_ERROR
     except Exception as e:
-        producer.close()
+        # producer.close()
         logging.info(f"exception ={e}")
         # logging.info(f"exception ={dir(e)}")
         return "exception ", RespCode.ARGS_ERROR
+    finally:
+        logging.info(f"finally-->producer.close()")
+        producer.close()
 # endergion 傳送kafka
