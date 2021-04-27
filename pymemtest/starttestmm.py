@@ -56,7 +56,7 @@ url = f"http://{serverip}/v0.0/events"
 resp = requests.get(f'http://{serverip}//v0.0/beginmm')
 print(resp.text)
 
-
+requests.get(f'http://{serverip}/v0.0/memory')
 # while True:
 #     response = requests.post(url=url, headers=headers)
 #     # print(dir(response))

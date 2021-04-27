@@ -62,8 +62,12 @@ url = f"http://{serverip}/v0.0/events"
 
 
 # Start some API Calls
-for _ in range(10000):
+for _ in range(1000000 * 5):
     requests.post(url=url, headers=headers, data=data)
+    # print((_ // 5))
+    if (_ % 100) == 0:
+        resp = requests.get(f'http://{serverip}/v0.0/memory')
+        print(resp.text)
     sleep(0.1)
 
 # Memory usage after
