@@ -11,8 +11,8 @@ logging.basicConfig(level=logging.DEBUG,
                     # datefmt='%m-%d %H:%M',
                     )
 
-HOST = "192.168.40.191"
-PORT = 8000
+HOST = "3.113.200.169"
+PORT = 9093
 
 tcpserver = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpserver.connect((HOST, PORT))

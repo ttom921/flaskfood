@@ -62,7 +62,7 @@ url = f"http://{serverip}/v0.0/events"
 
 
 # Start some API Calls
-for _ in range(1000000 * 5):
+for _ in range(500000 * 1):
     requests.post(url=url, headers=headers, data=data)
     # print((_ // 5))
     if (_ % 100) == 0:
