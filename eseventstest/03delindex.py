@@ -18,6 +18,8 @@ if __name__ == "__main__":
     # 打上連接es的host和port
     es = Elasticsearch(hosts="192.168.83.129", port=9200)
     index_name = "es_event"
-    # 創建
-    #create_index(es, index_name)
+
+    # 刪除
     del_index(es, index_name)
+    # 創建
+    create_index(es, index_name)

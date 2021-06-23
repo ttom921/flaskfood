@@ -3,6 +3,7 @@ import logging
 import json
 from psutil._compat import xrange
 import random
+from time import sleep, time
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s.%(msecs)03d [%(lineno)s] [PID %(process)d] %(levelname)-7s %(message)s ',
@@ -90,9 +91,14 @@ def genTestData(es):
     index_name = "es_event"
     utctime, strtime = __getEpochtimeDay(2021, 5, 1)
     logging.info(f"utctime={utctime}")
-    for i in xrange(0, 1):
+    for i in xrange(0, 10000):
         randev = random.randint(0, eventlen)
         randcar = random.randint(0, carlen)
+        randyear = random.randint(2020, 2022)
+        randmonth = random.randint(1, 12)
+        randday = random.randint(1, 28)
+
+        utctime, strtime = __getEpochtimeDay(randyear, randmonth, randday)
         testdata = {
             "date": utctime,
             "hdate": strtime,
@@ -104,6 +110,17 @@ def genTestData(es):
         es.index(index=index_name, body=testdata)
 
 
+def unit_test():
+    for i in xrange(0, 12):
+        randmonth = random.randint(1, 12)
+        randday = random.randint(1, 28)
+        print(f"month={randmonth} randday={randday}")
+
+
 if __name__ == "__main__":
     es = Elasticsearch(hosts="192.168.83.129", port=9200)
-    genTestData(es)
+    for i in xrange(0, 100):
+        genTestData(es)
+        sleep(500 / 1000)
+
+    # unit_test()

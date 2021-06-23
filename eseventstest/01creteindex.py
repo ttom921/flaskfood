@@ -43,10 +43,10 @@ def get_mapping():
                 "type": "keyword"
             },
             "event_name": {
-                "type": "text"
+                "type": "keyword"
             },
             "interval": {
-                "type": "text"
+                "type": "keyword"
             },
             "desc": {
                 "type": "text"
@@ -64,6 +64,6 @@ if __name__ == "__main__":
     # 打上連接es的host和port
     es = Elasticsearch(hosts="192.168.83.129", port=9200)
     index_name = "es_event"
+    del_index(es, index_name)
     # 創建
     create_index(es, index_name)
-    #del_index(es, index_name)
