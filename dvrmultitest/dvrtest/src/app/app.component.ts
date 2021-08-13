@@ -5,6 +5,9 @@ import * as moment from 'moment';
 // const shajs = require('sha.js')
 import * as sha1 from 'js-sha1';
 import { CarService } from './_common/_services/car/car.service';
+import { delay, skipWhile, startWith, switchMap } from 'rxjs/operators';
+import axios from 'axios';
+import { interval, Subscription } from 'rxjs';
 // declare model
 @Component({
   selector: 'app-root',
@@ -30,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   polling: any = null;
   updatetime = 3;
   isClicked = false;
+  timeInterval: Subscription;
   constructor(
     private tokenService: TokenService,
     private carService: CarService
@@ -52,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.polling) {
       clearInterval(this.polling);
     }
+    this.timeInterval.unsubscribe();
   }
   login() {
     localStorage.removeItem('currentCar');
@@ -153,7 +158,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       ]
     };
-    this.carService.Put(senddata).subscribe(
+    this.carService.Put(senddata).pipe(delay(1000)).subscribe(
       res => {
         console.log(`send time->${utctime}`);
       },
@@ -162,11 +167,68 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   startsend() {
     this.isClicked = true;
     this.polling = setInterval(() => {
       //console.log(`setInterval`);
       this.sendgps();
     }, this.updatetime * 1000);
+    // let utctime = Math.round(moment.utc().valueOf() / 1000);
+    // let dvrutctime = utctime;
+    // let senddata = {
+    //   "dvrUTCTime": dvrutctime,
+    //   "dvrIP": "192.168.0.1",
+    //   "dvrGateway": "192.168.0.254",
+    //   "dvrNetMode": "WWAN",
+    //   "ign": true,
+    //   "heading": 11111,
+    //   "gps": [
+    //     {
+    //       "time": utctime,//123456790.111,
+    //       "latitude": 123.5,
+    //       "longitude": 123.5,
+    //       "altitude": 123.5,
+    //       "satNum": 5,
+    //       "fix": true,
+    //       "heading": 12,
+    //       "speed": 80.5
+    //     },
+    //     {
+    //       "time": utctime,//123456789.123,
+    //       "speed": 80.5
+    //     }
+    //   ],
+    //   "gsensor": [
+    //     {
+    //       "time": utctime,//123456790.111,
+    //       "x": 123.55,
+    //       "y": 123.55,
+    //       "z": 123.55
+    //     },
+    //     {
+    //       "time": utctime,//123456789.222,
+    //       "x": 123.55,
+    //       "y": 123.55,
+    //       "z": 123.55
+    //     }
+    //   ]
+    // };
+
+    // this.timeInterval = interval(6000)
+    //   .pipe(
+    //     startWith(0),
+    //     switchMap(() => this.carService.Put(senddata))
+    //   ).subscribe(
+    //     res => {
+    //       console.log(res);
+    //     },
+    //     (error) => {
+    //       console.error(error);
+    //     }
+    //   );
+
+
+
   }
 }

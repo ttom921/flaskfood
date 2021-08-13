@@ -29,7 +29,7 @@ export class CarService {
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: `${carinfo.car_token}`,
-        Waiting: "Ture"
+        Waiting: "True"
       }),
     };
 
