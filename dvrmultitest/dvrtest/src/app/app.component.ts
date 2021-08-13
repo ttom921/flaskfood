@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokenService } from './_common/_services/token.service';
 import * as moment from 'moment';
 // import * as SHA from 'sha.js';
@@ -11,17 +11,50 @@ import { CarService } from './_common/_services/car/car.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'dvrtest';
-  caruid_list = ["6e:b3:d2:b9:1f:93", "6e:b3:d2:b9:1f:93"]
+  caruid = "";
+  caruid_list = [
+    "6e:b3:d2:b9:1f:93",
+    //  "6e:b3:d2:b9:1f:93"
+  ];
+  // caruid_list = [
+  //   //"00:0f:3a:03:10:f4",
+  //   //"00:0f:3a:03:10:eb",
+  //   //"00:0f:3a:03:11:dd",
+  //   //"00:0f:3a:03:10:f3",
+  //   //"00:0f:3a:03:68:21"
+  // ];
+
+
+  polling: any = null;
+  updatetime = 3;
+  isClicked = false;
   constructor(
     private tokenService: TokenService,
     private carService: CarService
   ) {
     localStorage.removeItem('currentCar');
+
+  }
+
+  ngOnInit(): void {
+    //
+    // 6 -> 10
+    let rndint = Math.floor(Math.random() * 4) + 6;
+    this.updatetime = rndint;
+    console.log(`setInterval ${this.updatetime}`);
+    //
+    this.login();
+  }
+  ngOnDestroy(): void {
+    //console.log(`FwStatusList->ngOnDestroy`);
+    if (this.polling) {
+      clearInterval(this.polling);
+    }
   }
   login() {
-
+    localStorage.removeItem('currentCar');
     //sha1('Message to hash');
     var hash = sha1.create();
     hash.update('Message to hash').hex();
@@ -35,10 +68,10 @@ export class AppComponent {
 
     //let utctime = Math.round(moment.utc().valueOf() / 1000);
     console.log(`utctime=${utctime}`);
-    let caruid = this.caruid_list[0];
+    this.caruid = this.getrnddvr();// this.caruid_list[0];
 
     let senddata = {
-      "dvr_uid": caruid,
+      "dvr_uid": this.caruid,
       "vendor_id": "ViewTec",
       "utc": utctime,
       "token": hash
@@ -70,7 +103,13 @@ export class AppComponent {
     console.log(`hex->******${hash}******`);
     return `${hash}`
   }
+  getrnddvr() {
+    let lstleng = this.caruid_list.length;
+    // 0 -> n
+    let rndint = Math.floor(Math.random() * lstleng);
+    return this.caruid_list[rndint];
 
+  }
   sendgps() {
     // let utctime = moment.utc().valueOf();
     // let dvrutctime = Math.round(utctime / 1000);
@@ -116,12 +155,18 @@ export class AppComponent {
     };
     this.carService.Put(senddata).subscribe(
       res => {
-        console.log(res);
+        console.log(`send time->${utctime}`);
       },
       (error) => {
         console.error(error);
       }
     );
   }
-
+  startsend() {
+    this.isClicked = true;
+    this.polling = setInterval(() => {
+      //console.log(`setInterval`);
+      this.sendgps();
+    }, this.updatetime * 1000);
+  }
 }

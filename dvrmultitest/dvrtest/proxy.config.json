@@ -1,6 +1,6 @@
 {
   "/v0.5/*": {
-    "target": "http://192.168.40.209",
+    "target": "http://www.nvtfms.com",
     "secure": false,
     "logLevel": "debug"
   },

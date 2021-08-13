@@ -1,3 +1,5 @@
-<h1>test</h1>
-<button (click)="login()">login</button>
-<button (click)="sendgps()">sendgps</button>
+<h1>test DVR {{caruid}}</h1>
+<!-- <button (click)="login()">login</button> -->
+<!-- <button (click)="sendgps()">sendgps</button> -->
+
+<button mat-raised-button type="button" [disabled]="isClicked" color="primary" (click)="startsend()">StartSendGPS</button>
