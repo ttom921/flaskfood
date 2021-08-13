@@ -1,0 +1,22 @@
+{
+  "/v0.5/*": {
+    "target": "http://192.168.40.209",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/allen/*": {
+    "target": "http://192.168.40.191",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/myttomtest1/*": {
+    "target": "http://192.168.40.209",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/myttomtest2/*": {
+    "target": "http://ec2-3-113-200-169.ap-northeast-1.compute.amazonaws.com",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
