@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, BigInteger
+from sqlalchemy.sql import func
 from .base import Base
 from datetime import date, datetime
 from database import *
@@ -8,12 +9,13 @@ from database import *
 # LOG_LEVEL_INFO()
 
 
-class Stock(Base):
+class Stocks(Base):
     """定義數據模型"""
     __tablename__ = "stocks"
     id = Column(Integer, primary_key=True)
     code = Column(String(4), nullable=True)
     name = Column(String(32), nullable=True)
+
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     deleted_at = Column(DateTime, nullable=True)

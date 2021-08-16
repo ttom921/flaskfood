@@ -30,13 +30,13 @@ def _add(reqArgs):
         status, dbsession = db.get_session("ttomdb")
         logging.info(f"example->_add -> dbsession_session={dbsession}")
       # 建立第一筆資料
-        stock = Stock()
-        stock.code = '1101'
-        stock.name = '台泥'
-        logging.info(f"stock={stock.code}")
-        dbsession.add(stock)
+        stocks = Stocks()
+        stocks.code = '1101'
+        stocks.name = '台泥'
+        logging.info(f"stock={stocks.code}")
+        dbsession.add(stocks)
 
-        mystock = dbsession.query(Stock).filter_by(code="1101").first()
+        mystock = dbsession.query(Stocks).filter_by(code="1101").first()
         logging.info(f"mystock={mystock}")
         # 寫入資料庫
         dbsession.commit()

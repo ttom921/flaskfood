@@ -46,9 +46,11 @@ class _EngineConnector(object):
             pool_pre_ping=True,
             echo=echo
         )
-        SessionLocal = sessionmaker(autocommit=False, autoflash=False, bind=self.engine)
+        SessionFactory = sessionmaker(bind=self.engine, autoflush=False)
+        # SessionFactory = sessionmaker(bind=self.engine)
         # Base.metadata.create_all(bind=self.engine)
-        session = scoped_session(SessionLocal, scopefunc=_app_ctx_stack.__ident_func__)
+        # session = scoped_session(SessionLocal, scopefunc=_app_ctx_stack.__ident_func__)
+        session = scoped_session(SessionFactory, scopefunc=_app_ctx_stack.__ident_func__)
         self.session = session
 
 
