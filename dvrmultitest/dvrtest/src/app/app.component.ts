@@ -16,18 +16,20 @@ import { interval, Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'dvrtest';
+  //vendor_id="ViewTec";
   caruid = "";
-  caruid_list = [
-    "6e:b3:d2:b9:1f:93",
-    //  "6e:b3:d2:b9:1f:93"
-  ];
   // caruid_list = [
-  //   //"00:0f:3a:03:10:f4",
-  //   //"00:0f:3a:03:10:eb",
-  //   //"00:0f:3a:03:11:dd",
-  //   //"00:0f:3a:03:10:f3",
-  //   //"00:0f:3a:03:68:21"
+  //   "6e:b3:d2:b9:1f:93",
+  //   //  "6e:b3:d2:b9:1f:93"
   // ];
+  vendor_id = "caravision";
+  caruid_list = [
+    "00:0f:3a:03:10:f4",
+    "00:0f:3a:03:10:eb",
+    "00:0f:3a:03:11:dd",
+    "00:0f:3a:03:10:f3",
+    "00:0f:3a:03:68:21"
+  ];
 
 
   polling: any = null;
@@ -74,10 +76,11 @@ export class AppComponent implements OnInit, OnDestroy {
     //let utctime = Math.round(moment.utc().valueOf() / 1000);
     console.log(`utctime=${utctime}`);
     this.caruid = this.getrnddvr();// this.caruid_list[0];
+    //console.log(`this.caruid=${this.caruid}`);
 
     let senddata = {
       "dvr_uid": this.caruid,
-      "vendor_id": "ViewTec",
+      "vendor_id": this.vendor_id,
       "utc": utctime,
       "token": hash
     };
