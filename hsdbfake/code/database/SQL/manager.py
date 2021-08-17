@@ -47,6 +47,7 @@ class _EngineConnector(object):
             echo=echo
         )
         SessionFactory = sessionmaker(bind=self.engine, autoflush=False)
+        # https://stackoverflow.com/questions/32922210/why-does-a-query-invoke-a-auto-flush-in-sqlalchemy
         # SessionFactory = sessionmaker(bind=self.engine)
         # Base.metadata.create_all(bind=self.engine)
         # session = scoped_session(SessionLocal, scopefunc=_app_ctx_stack.__ident_func__)
