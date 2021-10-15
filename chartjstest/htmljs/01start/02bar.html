@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TEST</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+
+<body>
+    <div style="width:400px">
+        <canvas id="mychart"></canvas>
+    </div>
+    <script>
+        var ctx = document.getElementById('mychart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Sun', 'Mon', 'Tue'],
+                datasets: [{
+                    label: 'Red',
+                    data: [25, 35, 40],
+                    backgroundColor: '#f88',
+                }, {
+                    label: 'Green',
+                    data: [20, 10, 30],
+                    backgroundColor: '#484',
+                }, {
+                    label: 'Blue',
+                    data: [30, 20, 15],
+                    backgroundColor: '#48f',
+                }],
+            },
+        });
+
+    </script>
+    </div>
+</body>
+
+</html>
