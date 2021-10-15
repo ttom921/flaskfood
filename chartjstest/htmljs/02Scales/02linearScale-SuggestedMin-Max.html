@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TEST</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+</head>
+
+<body>
+    <div style="padding: 20%;">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script type="module">
+        //import * as Utils from "./utils.js"
+        import * as Utils from "../gutils.js"
+        //setup
+        const DATA_COUNT = 7;
+        const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
+
+        const labels = Utils.months({ count: 7 });
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [10, 30, 39, 20, 25, 34, -10],
+                    borderColor: Utils.CHART_COLORS.red,
+                    backgroundColor: Utils.CHART_COLORS.red,
+                },
+                {
+                    label: 'Dataset 2',
+                    data: [18, 33, 22, 19, 11, 39, 30],
+                    borderColor: Utils.CHART_COLORS.blue,
+                    backgroundColor: Utils.CHART_COLORS.blue,
+                }
+            ]
+        };
+        //Config
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Suggested Min and Max Settings'
+                    }
+                },
+                scales: {
+                    y: {
+                        // the data minimum used for determining the ticks is Math.min(dataMin, suggestedMin)
+                        suggestedMin: 30,
+                        // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
+                        suggestedMax: 50,
+                    }
+                }
+            },
+        };
+
+        var ctx = document.getElementById('myChart');
+        //console.log(ctx);
+        const myChart = new Chart(
+            ctx,
+            config
+        );
+    </script>
+</body>
+
+
+</html>

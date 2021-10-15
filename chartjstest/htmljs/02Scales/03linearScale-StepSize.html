@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TEST</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+</head>
+
+<body>
+    <div style="padding: 20%;">
+        <canvas id="myChart"></canvas>
+        <button id="Randomize">Randomize</button>
+    </div>
+    <script type="module">
+        //import * as Utils from "./utils.js"
+        import * as Utils from "../gutils.js"
+        //setup
+        const DATA_COUNT = 7;
+        const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
+
+        const labels = Utils.months({ count: 7 });
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: Utils.numbers(NUMBER_CFG),
+                    borderColor: Utils.CHART_COLORS.red,
+                    backgroundColor: Utils.CHART_COLORS.red,
+                },
+                {
+                    label: 'Dataset 2',
+                    data: Utils.numbers(NUMBER_CFG),
+                    borderColor: Utils.CHART_COLORS.blue,
+                    backgroundColor: Utils.CHART_COLORS.blue,
+                }
+            ]
+        };
+        //Config
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersection: false,
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Line Chart'
+                    }
+                },
+                hover: {
+                    mode: 'index',
+                    intersection: false
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        },
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            // forces step size to be 50 units
+                            stepSize: 50
+                        }
+                    }
+                }
+            },
+        };
+
+        var ctx = document.getElementById('myChart');
+        //console.log(ctx);
+        const myChart = new Chart(
+            ctx,
+            config
+        );
+        //click event
+        const actions = [
+            {
+                name: 'Randomize',
+                handler(chart) {
+                    chart.data.datasets.forEach(dataset => {
+                        dataset.data = Utils.numbers({ count: chart.data.labels.length, min: 0, max: 100 })
+                    });
+                    chart.update();
+                }
+            }
+        ];
+        const Randomizebtn = document.getElementById('Randomize');
+        Randomizebtn.addEventListener('click', function () {
+            console.log('Randomize clicked');
+            let act = actions.find(function (item, index, array) {
+                return item.name == "Randomize";
+            });
+            //console.log(act);
+            act.handler(myChart)
+
+        }, true)
+
+    </script>
+
+
+</body>
+
+
+</html>
