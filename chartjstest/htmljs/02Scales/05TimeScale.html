@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TimeScale</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+</head>
+
+<body>
+    <div style="padding: 20%;">
+        <canvas id="myChart"></canvas>
+        <button id="Randomize">Randomize</button>
+    </div>
+    <script type="module">
+        //import * as Utils from "./utils.js"
+        import * as Utils from "../gutils.js"
+        //setup
+        const DATA_COUNT = 7;
+        const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
+
+        const labels = Utils.months({ count: 7 });
+        const data = {
+            labels: [
+                Utils.newDate(0),
+                Utils.newDate(1),
+                Utils.newDate(2),
+                Utils.newDate(3),
+                Utils.newDate(4),
+                Utils.newDate(5),
+                Utils.newDate(6),
+            ],
+            datasets: [
+                {
+                    label: 'My First dataset ',
+                    borderColor: Utils.CHART_COLORS.red,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+                    fill: false,
+                    data: Utils.numbers(NUMBER_CFG),
+                },
+                {
+                    label: 'My Second dataset',
+                    borderColor: Utils.CHART_COLORS.blue,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+                    fill: false,
+                    data: Utils.numbers(NUMBER_CFG),
+                },
+                {
+                    label: 'Dataset with poindt data',
+                    borderColor: Utils.CHART_COLORS.green,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
+                    fill: false,
+                    data: [{
+                        x: Utils.newDateString(0),
+                        y: Utils.rand(0, 100)
+                    }, {
+                        x: Utils.newDateString(5),
+                        y: Utils.rand(0, 100)
+                    }, {
+                        x: Utils.newDateString(7),
+                        y: Utils.rand(0, 100)
+                    }, {
+                        x: Utils.newDateString(15),
+                        y: Utils.rand(0, 100)
+                    }]
+                }
+            ]
+        };
+        //Config
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+
+                    title: {
+                        display: true,
+                        text: 'Chart.js Line Logarithmic'
+                    }
+                },
+
+                scales: {
+                    x: {
+                        display: true,
+                    },
+                    y: {
+                        display: true,
+                        type: 'logarithmic'
+                    }
+                }
+            },
+        };
+
+        var ctx = document.getElementById('myChart');
+        //console.log(ctx);
+        const myChart = new Chart(
+            ctx,
+            config
+        );
+        //click event
+        const actions = [
+            {
+                name: 'Randomize',
+                handler(chart) {
+                    chart.data.datasets.forEach(dataset => {
+                        dataset.data.forEach(function (dataObj, j) {
+                            const newVal = Utils.rand(0, 100);
+                            if (typeof dataObj === 'object') {
+                                dataObj.y = newVal;
+                            } else {
+                                dataset.data[j] = newVal;
+                            }
+                        })
+                    });
+                    chart.update();
+                }
+            }
+        ];
+        const Randomizebtn = document.getElementById('Randomize');
+        Randomizebtn.addEventListener('click', function () {
+            console.log('Randomize clicked');
+            let act = actions.find(function (item, index, array) {
+                return item.name == "Randomize";
+            });
+            //console.log(act);
+            act.handler(myChart)
+
+        }, true)
+
+    </script>
+
+
+</body>
+
+
+</html>
