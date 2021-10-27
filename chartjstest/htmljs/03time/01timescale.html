@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TimeScale</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+</head>
+
+<body>
+    <div style="padding: 20%;">
+        <canvas id="myChart"></canvas>
+        <button id="Randomize">Randomize</button>
+    </div>
+    <script type="module">
+        //import * as Utils from "./utils.js"
+        import * as Utils from "../gutils.js"
+        //setup
+        // let utc_time = '2000-01-01 00:05';
+        // let mom = moment.utc(utc_time).local();
+        // console.log(mom.toISOString());
+
+        // Datetimes to display on chart
+        //let datetimes = [luxon.DateTime.utc(2000, 1, 1, 0, 5), luxon.DateTime.utc(2000, 1, 1, 4, 11), luxon.DateTime.utc(2000, 1, 1, 12, 38), luxon.DateTime.utc(2000, 1, 1, 15, 10), luxon.DateTime.utc(2000, 1, 1, 18, 41), luxon.DateTime.utc(2000, 1, 1, 22, 2)];
+        let datetimes = [
+            moment.utc('2000-01-01 00:05').local(),
+            moment.utc('2000-01-01 04:11').local(),
+            moment.utc('2000-01-01 12:38').local(),
+            moment.utc('2000-01-01 15:10').local(),
+            moment.utc('2000-01-01 18:41').local(),
+            moment.utc('2000-01-01 22:02').local()
+        ];
+        //console.log(datetimes);
+        // Create an array of ISO strings
+        let datetimes_isos = [];
+        datetimes.forEach(function (item, index, array) {
+            //datetimes_isos.push(item.toISO());
+            datetimes_isos.push(item.toISOString());
+        });
+        console.log(datetimes_isos);
+        // Chart's data
+        let data = [{ x: datetimes_isos[0], y: 0 }, { x: datetimes_isos[1], y: 10 }, { x: datetimes_isos[2], y: 20 }, { x: datetimes_isos[3], y: 40 }, { x: datetimes_isos[4], y: 50 }, { x: datetimes_isos[5], y: 60 }];
+
+        const chartData = {
+            labels: datetimes_isos,
+            datasets: [{ data: data }]
+        };
+        const config = {
+            type: 'line',
+            data: chartData,
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        ticks: {
+                            source: 'data'
+                        },
+                        time: {
+                            //unit: "minute"
+                            unit: "hour"
+                        },
+                    }
+                },
+            },
+        };
+
+
+
+        var ctx = document.getElementById('myChart');
+        //console.log(ctx);
+        const myChart = new Chart(
+            ctx,
+            config
+        );
+        //click event
+        const actions = [
+            {
+                name: 'Randomize',
+                handler(chart) {
+                    chart.data.datasets.forEach(dataset => {
+                        dataset.data.forEach(function (dataObj, j) {
+                            const newVal = Utils.rand(0, 100);
+                            if (typeof dataObj === 'object') {
+                                dataObj.y = newVal;
+                            } else {
+                                dataset.data[j] = newVal;
+                            }
+                        })
+                    });
+                    chart.update();
+                }
+            }
+        ];
+        const Randomizebtn = document.getElementById('Randomize');
+        Randomizebtn.addEventListener('click', function () {
+            console.log('Randomize clicked');
+            let act = actions.find(function (item, index, array) {
+                return item.name == "Randomize";
+            });
+            //console.log(act);
+            act.handler(myChart)
+
+        }, true)
+
+    </script>
+
+
+</body>
+
+
+</html>
