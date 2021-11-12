@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TimeScale</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+</head>
+
+<body>
+    <div style="padding: 20%;">
+        <canvas id="myChart"></canvas>
+
+    </div>
+    <script type="module">
+        //import * as Utils from "./utils.js"
+        import * as Utils from "../gutils.js"
+        //setup
+        let myChart = null;
+
+        //------------------------------
+        const labels = [
+            '09:00',
+            '10:00',
+            '11:00',
+            '12:00',
+            '13:00',
+            '14:00',
+            '15:00',
+        ];
+        // Chart's data
+        let data = [];
+
+        const chartData = {
+            labels: labels,
+            datasets: [
+                {
+                    type: 'line',
+                    label: 'My dataset ',
+                    borderColor: Utils.CHART_COLORS.blue,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+                    data: [20, 15, 10, 20, 25, 30, 150],
+                    yAxisID: 'y',
+                },
+                {
+                    type: 'line',
+                    label: 'acc dataset',
+                    //barPercentage: 1,
+                    //categoryPercentage: 1,
+                    //pointStyle: 'rect',
+                    borderColor: Utils.CHART_COLORS.red,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+                    data: [5, 5, 5, 5, 0, 5, 0],
+                    yAxisID: 'y1',
+                    stepped: true,//畫直線
+                    fill: 'origin',
+                    // 越小越出現在下面
+                    order: 2,
+                },
+                {
+                    type: 'line',
+                    label: 'idle dataset',
+                    //barPercentage: 1,
+                    //categoryPercentage: 1,
+                    //pointStyle: 'rect',
+                    borderColor: Utils.CHART_COLORS.green,
+                    backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
+                    data: [0, 2, 2, 0, 0, 0, 0],
+                    yAxisID: 'y1',
+                    stepped: true,
+                    fill: 'origin',
+                    order: 1,
+                },
+
+            ]
+        };
+        const config = {
+
+            data: chartData,
+            options: {
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+
+                scales: {
+                    x: {
+                        //offset: true,
+                    },
+                    y1: {
+                        beginAtZero: true,
+                    }
+                },
+                // onClick: (event, clickedElements) => {
+
+                //     if (clickedElements.length === 0) return;
+                //     console.log("onClick");
+                // }
+                // onClick: (c, i) => {
+                //     console.log("c=>", c);
+                //     console.log("i=>", i);
+                //     //console.log('Get the underlying label for click,', c.chart.config._config.data.labels[i[0].index]);
+                // },
+                // onClick: (e) => {
+
+                //     const canvasPosition = Chart.helpers.getRelativePosition(e, myChart);
+                //     //console.log("canvasPosition=>", canvasPosition);
+                //     // Substitute the appropriate scale IDs
+                //     const dataX = myChart.scales.x.getValueForPixel(canvasPosition.x);
+                //     const dataY = myChart.scales.y.getValueForPixel(canvasPosition.y);
+                //     const dataY1 = myChart.scales.y1.getValueForPixel(canvasPosition.y);
+                //     console.log("myChart.config.data.datasets=>", myChart.config.data.datasets);
+                //     let timexvalue = myChart.config.data.datasets[1].data[dataX];
+                //     console.log("timexvalue=>", timexvalue);
+                //     //if(dataX)
+                //     console.log("canvasPosition dataX=>", dataX);
+                //     console.log("canvasPosition dataY=>", dataY);
+                //     console.log("canvasPosition dataY1=>", dataY1);
+
+                // }
+            },
+
+        };
+
+
+
+        var ctx = document.getElementById('myChart');
+        //console.log(ctx);
+        myChart = new Chart(
+            ctx,
+            config
+        );
+
+
+
+    </script>
+
+
+</body>
+
+
+</html>

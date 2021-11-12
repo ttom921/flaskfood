@@ -37,7 +37,40 @@
             moment.utc('2000-01-01 18:41').local(),
             moment.utc('2000-01-01 22:02').local()
         ];
-        //console.log(datetimes);
+
+        //946685100000
+        let t1 = moment(946685100000).utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+        console.log("t1=>", t1);
+
+        //let luxont1 = luxon.DateTime.fromMillis(946685100000).toISO();
+        let luxont1 = luxon.DateTime.fromMillis(946685100000).toUTC().toISO();
+        console.log("luxont1=>", luxont1);
+        console.log("------------------------------------------");
+        const stringDate = "2000-01-01T00:05:00.000Z";
+        let t2 = moment(Date.parse(stringDate));
+        console.log("t2=>", t2.toISOString());
+        console.log("t2=>", t2.format("YYYY-MM-DD HH:mm:ss"));
+        //從UTC轉過來
+        let luxont2 = luxon.DateTime.fromISO(stringDate, { zone: 'utc' });
+        console.log("luxont2-1=>", luxont2.toUTC().toISO());
+        let luxont3 = luxon.DateTime.fromISO(stringDate);
+        console.log("luxont2-2=>", luxont3.toFormat("yyyy-MM-dd T"));
+        console.log("luxont2-2=>", luxont3.toFormat("yyyy-MM-dd TTTT"));
+        console.log("luxont2-2=>", luxont3.toFormat("yyyy-MM-dd HH:mm:ss"));
+        console.log("------------------------------------------");
+        ////2021-10-26T18:12:02.053Z
+        const stringDate3 = "2021-10-26T18:12:02.053Z";
+        let t3 = moment(Date.parse(stringDate3));
+        console.log("t3=>", t3.utc().valueOf());
+        console.log("t3=>", t3.toISOString());
+        let luxont4 = luxon.DateTime.fromISO(stringDate3, { zone: 'utc' });
+        console.log("luxont3-1=>", luxont4.toMillis());
+        console.log("luxont3-1=>", luxont4.valueOf());
+        console.log("luxont3-1=>", luxont4.toISO());
+        //------------------------------
+        //obj.date = DateTime.fromMillis(parseInt(obj.event_start_time) * 1000).toFormat("yyyy/MM/dd");
+        //bj.time = DateTime.fromMillis(parseInt(obj.event_start_time) * 1000).toFormat("HH:mm:ss");
+        //----------------------------------
         // Create an array of ISO strings
         let datetimes_isos = [];
         datetimes.forEach(function (item, index, array) {
